@@ -32,33 +32,40 @@ function fetchRegisterPageData() {
 
 // Function to handle user login
 function signIn() {
-
   const { username, password, messageElement } = fetchSignInPageData()
-
-  // Write code for task1 here
+  // TODO: Write code for task1 here
   // Use try-catch block
-
     // In the try block, fetch userInfo from the local storage
+   try {
+    const registeredUser = JSON.parse(localStorage.getItem('user'));
+    
+    // throw error if there is no registered users
+    if (!registeredUser || registeredUser.username !== username) {
+      throw new Error();
+    };
     
     // Check if the entered username or password is empty
-    
-  
-      // Check if the username and password of the userInfo from local storage matches the entered username and password
-      
-        // Set the session storage with the login key set to true
-        
-        // Redirect to index.html page
-       
-     
-
+    if (username === '' || password === '') {
+      messageElement.textContent = "Both username and password fields must not be empty";
+    } else {
+       // Check if the username and password of the userInfo from local storage matches the entered username and password   
+       if (username === registeredUser.username && password === registeredUser.password) {
+          // Set the session storage with the login key set to true
+          sessionStorage.setItem("login", true);
+          // Redirect to index.html page
+          window.location.href = "../html/index.html"
+       } else {
         // If the username or password does not match, display error message
-       
+        messageElement.textContent = "Username and password combination do not match";
         // Set the login info in the session storage as false
-        
- 
+        sessionStorage.setItem("login", true);
+      }
+    }     
+   } catch (err) {
     // In the catch block, if the user is not registered, display appropriate error message
     // Use paragraph with id 'message' to display all the error messages
-    
+    messageElement.textContent = "No user registered by this username please click below to register";
+   }
 }
 
 function fetchSignInPageData() {
@@ -122,21 +129,32 @@ function loadSignInPage() {
 
 // Function to fetch data from an external URL endpoint
 async function fetchData(url, listElement) {
-
-  // Write your code for task2 here
-  // Use try-catch to hanle errors
-  // fetch the data from the external API
-  // If data is present, call the displayData() function
-  // If there's error in fetching data. log it in the console
-  
+  // TODO: Write your code for task2 here
+  // Use try-catch to handle errors
+  try {
+    // fetch the data from the external API
+    const response = await fetch(`${url}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+    });
+    const data = await response.json();
+    // If data is present, call the displayData() function
+    if(data) {
+      displayData(data, listElement);
+    }
+  } catch (err) {
+     // If there's error in fetching data. log it in the console  
+    console.log(err);
+  }
 }
-
-
+  
 // Display data which is fetched from an external API
 function displayData(data, listElement) {
 
   const dataObjects = Object.values(data)[0];
-  console.log(dataObjects);
+  //console.log(dataObjects);
 
   let dataText = "";
   for (let item of dataObjects) {
@@ -148,8 +166,9 @@ function displayData(data, listElement) {
 
 // Logging out when clicked on the logout button
 function logout() {
-  // Write your code for task3 here
+  // TODO:Write your code for task3 here
   // Set the login key in the session storage to false
+  sessionStorage.setItem('login', false);  
   // Redirect to the signin page
- 
+  loadSignInPage();
 }
