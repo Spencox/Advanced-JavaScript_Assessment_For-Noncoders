@@ -33,10 +33,9 @@ function fetchRegisterPageData() {
 // Function to handle user login
 function signIn() {
   const { username, password, messageElement } = fetchSignInPageData()
-  // TODO: Write code for task1 here
-  // Use try-catch block
-    // In the try block, fetch userInfo from the local storage
+  // In the try block, fetch userInfo from the local storage
    try {
+    // get user data from local storage
     const registeredUser = JSON.parse(localStorage.getItem('user'));
     
     // throw error if there is no registered users
@@ -129,7 +128,6 @@ function loadSignInPage() {
 
 // Function to fetch data from an external URL endpoint
 async function fetchData(url, listElement) {
-  // TODO: Write your code for task2 here
   // Use try-catch to handle errors
   try {
     // fetch the data from the external API
@@ -166,7 +164,6 @@ function displayData(data, listElement) {
 
 // Logging out when clicked on the logout button
 function logout() {
-  // TODO:Write your code for task3 here
   // Set the login key in the session storage to false
   sessionStorage.setItem('login', false);  
   // Redirect to the signin page
